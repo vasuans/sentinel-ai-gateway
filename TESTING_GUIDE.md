@@ -27,10 +27,9 @@
 
 ## Quick Start (5 minutes)
 
-### Step 1: Extract and Navigate
+### Step 1: Navigate
 ```bash
-unzip sentinel-gateway.zip
-cd sentinel-gateway
+cd sentinel-ai-gateway
 ```
 
 ### Step 2: Start the Stack

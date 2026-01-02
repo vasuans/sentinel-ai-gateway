@@ -75,7 +75,7 @@ class PIISanitizer:
             logger.error(f"Failed to initialize PII Sanitizer: {e}")
             # Create a fallback regex-based sanitizer
             self._initialized = True
-        
+    
     def analyze(self, text: str, language: str = "en") -> List[RecognizerResult]:
         """Analyze text for PII entities."""
         if not self._analyzer:
@@ -225,7 +225,7 @@ class PolicyEngine:
                 description="Block refunds exceeding $500",
                 action_types=[ActionType.REFUND],
                 conditions={"max_amount": 500},
-                risk_score_modifier=0.4,
+                risk_score_modifier=1.0,  # 1.0 = automatic deny when violated
                 priority=10,
             ),
             PolicyRule(
@@ -234,7 +234,7 @@ class PolicyEngine:
                 description="Require approval for payments over $10,000",
                 action_types=[ActionType.PAYMENT],
                 conditions={"max_amount": 10000},
-                risk_score_modifier=0.3,
+                risk_score_modifier=0.85,  # 0.85 = requires human approval
                 priority=20,
             ),
             PolicyRule(
@@ -243,7 +243,7 @@ class PolicyEngine:
                 description="All admin actions are high risk",
                 action_types=[ActionType.ADMIN_ACTION],
                 conditions={},
-                risk_score_modifier=0.6,
+                risk_score_modifier=0.85,  # 0.85 = requires human approval
                 priority=5,
             ),
             PolicyRule(
@@ -261,7 +261,7 @@ class PolicyEngine:
                 description="Database writes to protected tables",
                 action_types=[ActionType.DATABASE_WRITE],
                 conditions={"protected_tables": ["users", "payments", "credentials"]},
-                risk_score_modifier=0.5,
+                risk_score_modifier=1.0,  # 1.0 = automatic deny
                 priority=15,
             ),
             PolicyRule(
@@ -270,7 +270,7 @@ class PolicyEngine:
                 description="Limit bulk operations affecting many records",
                 action_types=[ActionType.DATABASE_WRITE, ActionType.DATABASE_QUERY],
                 conditions={"max_affected_rows": 1000},
-                risk_score_modifier=0.35,
+                risk_score_modifier=0.9,  # 0.9 = requires human approval
                 priority=25,
             ),
         ]
