@@ -1,0 +1,56 @@
+# Prometheus Configuration for Sentinel Gateway
+# Scrape configuration for metrics collection
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  
+  # Attach labels to any time series or alerts
+  external_labels:
+    environment: 'development'
+    service: 'sentinel-gateway'
+
+# Alertmanager configuration (optional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - alertmanager:9093
+
+# Rule files (optional)
+# rule_files:
+#   - "alerts/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+    scheme: http
+
+  # Sentinel Gateway metrics
+  - job_name: 'sentinel-gateway'
+    static_configs:
+      - targets: ['gateway:8000']
+    metrics_path: /metrics
+    scheme: http
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    
+    # Relabel configurations
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'sentinel-gateway'
+
+  # Redis metrics (if using redis_exporter)
+  # - job_name: 'redis'
+  #   static_configs:
+  #     - targets: ['redis-exporter:9121']
+
+  # PostgreSQL metrics (if using postgres_exporter)
+  # - job_name: 'postgres'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']
