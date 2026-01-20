@@ -2,6 +2,9 @@
 
 A production-ready middleware platform that governs AI agent actions in enterprise environments. Acts as a zero-trust proxy between AI agents and backend systems, ensuring every agent action is authenticated, evaluated against policies, sanitized for PII, and audited.
 
+<img width="2816" height="1536" alt="Gemini_Generated_Image_lste63lste63lste" src="https://github.com/user-attachments/assets/253865f8-c8c6-4b0f-befa-439c7a5afb0e" />
+
+
 ---
 
 ## The Problem
@@ -255,6 +258,9 @@ curl -X POST http://sentinel:8000/api/v1/gateway/evaluate \
   "approval_url": "https://approvals.company.com/apr_abc123"
 }
 ```
+
+![Animation](https://github.com/user-attachments/assets/875f0deb-8dc9-458a-8992-c737fde048c7)
+
 
 ### 4. What the Agent Does Next
 
